@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import type { StockFullDTO } from "../../../types/StockDTOs";
 import { fetchFullStockByTicker } from "../../../api/StockClient";
-import StockPriceChart from "../../shared/StockPriceChart";
+import AdvancedStockChart from "../../shared/AdvancedStockChart";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
@@ -153,8 +153,8 @@ const StockDashboard: React.FC = () => {
                             <Typography sx={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(148,163,184,0.6)", letterSpacing: "1px", mb: 2 }}>
                                 PRICE HISTORY
                             </Typography>
-                            <Box sx={{ height: 320 }}>
-                                <StockPriceChart ticker={stock.ticker} priceRecords={stock.priceRecords} />
+                            <Box sx={{ height: 360 }}>
+                                <AdvancedStockChart ticker={stock.ticker} priceRecords={stock.priceRecords} />
                             </Box>
                         </Box>
 

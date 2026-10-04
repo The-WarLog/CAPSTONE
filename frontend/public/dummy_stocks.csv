@@ -1,0 +1,6 @@
+ticker,companyName,price,sector,marketCap,volatility,investorRating
+AAPL,Apple Inc.,135.11,Technology,Large,Stable,Buy
+GOOG,Alphabet Inc.,2945.53,Technology,Large,Normal,Hold
+MSFT,Microsoft Corp.,293.68,Technology,Large,Stable,Buy
+TSLA,Tesla Inc.,789.50,Consumer Cyclical,Large,High,Hold
+AMZN,Amazon.com Inc.,3096.85,Consumer Cyclical,Large,Normal,Buy

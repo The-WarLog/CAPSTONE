@@ -1,7 +1,12 @@
 
 export interface PriceRecordDTO {
     marketDate: string;
-    stockPrice: number;
+    stockPrice: number; // Keep for backward compatibility, will match 'close'
+    open: number;
+    high: number;
+    low: number;
+    close: number;
+    volume: number;
 }
 
 export interface NewsReleaseDTO {
