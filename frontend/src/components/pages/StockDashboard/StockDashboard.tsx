@@ -9,28 +9,53 @@ import NewspaperIcon from "@mui/icons-material/Newspaper";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
+// Banana Life Theme Colors
+const theme = {
+    bg: "#0f1f22",
+    card: "#1a3034",
+    ink: "#e8f4f1",
+    mute: "#93b0b3",
+    ban: "#ffcf33",
+    ban2: "#e9b400",
+    leaf: "#4cc989",
+    red: "#ef7070",
+    line: "#2b4549",
+    ph: "#142629"
+};
+
 const chipStyle = {
-    bgcolor: "rgba(99,102,241,0.1)",
-    color: "#a5b4fc",
-    border: "1px solid rgba(99,102,241,0.2)",
-    fontSize: "0.75rem",
-    fontWeight: 600,
+    bgcolor: theme.ph,
+    color: theme.ban,
+    border: `1px solid ${theme.line}`,
+    fontSize: "0.8rem",
+    fontWeight: 700,
+    fontFamily: "'Nunito', sans-serif",
+    borderRadius: "12px",
+    padding: "4px 2px",
 };
 
 const StatCard: React.FC<{ label: string; value: string }> = ({ label, value }) => (
     <Box
         sx={{
             flex: "1 1 140px",
-            bgcolor: "rgba(255,255,255,0.03)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: "12px",
+            bgcolor: theme.card,
+            border: `1px solid ${theme.line}`,
+            borderRadius: "14px",
             p: 2,
+            transition: "transform 0.2s, box-shadow 0.2s",
+            "&:hover": {
+                transform: "translateY(-2px)",
+                boxShadow: `0 4px 12px ${theme.ph}`,
+                borderColor: theme.ban2,
+            }
         }}
     >
-        <Typography sx={{ fontSize: "0.7rem", color: "rgba(148,163,184,0.6)", letterSpacing: "1px", mb: 0.5 }}>
+        <Typography sx={{ fontFamily: "'Nunito', sans-serif", fontSize: "0.75rem", color: theme.mute, fontWeight: 700, mb: 0.5 }}>
             {label.toUpperCase()}
         </Typography>
-        <Typography sx={{ fontSize: "0.95rem", fontWeight: 600, color: "#e2e8f0" }}>{value}</Typography>
+        <Typography sx={{ fontFamily: "'Baloo 2', sans-serif", fontSize: "1.2rem", fontWeight: 600, color: theme.ink, lineHeight: 1.1 }}>
+            {value}
+        </Typography>
     </Box>
 );
 
@@ -55,9 +80,10 @@ const StockDashboard: React.FC = () => {
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    bgcolor: "#0f172a",
-                    color: "#f1f5f9",
+                    bgcolor: theme.bg,
+                    color: theme.ink,
                     overflowY: "auto",
+                    fontFamily: "'Nunito', sans-serif",
                 }}
             >
                 {/* Back button */}
@@ -70,63 +96,65 @@ const StockDashboard: React.FC = () => {
                         p: 3,
                         pb: 0,
                         cursor: "pointer",
-                        color: "rgba(148,163,184,0.7)",
+                        color: theme.mute,
                         width: "fit-content",
-                        "&:hover": { color: "#f1f5f9" },
+                        "&:hover": { color: theme.ban },
                         transition: "color 0.15s",
                     }}
                 >
-                    <ArrowBackIcon sx={{ fontSize: "1rem" }} />
-                    <Typography sx={{ fontSize: "0.85rem" }}>Market Dashboard</Typography>
+                    <ArrowBackIcon sx={{ fontSize: "1.1rem" }} />
+                    <Typography sx={{ fontFamily: "'Nunito', sans-serif", fontSize: "0.95rem", fontWeight: 700 }}>Market Dashboard</Typography>
                 </Box>
 
                 {error && (
-                    <Box sx={{ p: 4, color: "#f87171" }}>
-                        <Typography>{error}</Typography>
+                    <Box sx={{ p: 4, color: theme.red }}>
+                        <Typography sx={{ fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>{error}</Typography>
                     </Box>
                 )}
 
                 {!stock && !error && (
                     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flex: 1 }}>
-                        <CircularProgress sx={{ color: "#6366f1" }} />
+                        <CircularProgress sx={{ color: theme.ban }} />
                     </Box>
                 )}
 
                 {stock && (
-                    <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3 }}>
+                    <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 3, maxWidth: "1100px", margin: "0 auto", width: "100%" }}>
                         {/* Header */}
-                        <Box>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 0.5 }}>
+                        <Box sx={{ bgcolor: theme.card, p: 3, borderRadius: "20px", border: `2px solid ${theme.line}` }}>
+                            <Box sx={{ display: "flex", alignItems: "baseline", gap: 2, mb: 1, flexWrap: "wrap" }}>
                                 <Typography
                                     id={`stock-ticker-${stock.ticker}`}
                                     sx={{
-                                        fontFamily: "'JetBrains Mono', monospace",
+                                        fontFamily: "'Baloo 2', sans-serif",
                                         fontWeight: 800,
-                                        fontSize: "2rem",
-                                        color: "#818cf8",
-                                        letterSpacing: "1px",
+                                        fontSize: "2.8rem",
+                                        color: theme.ban,
+                                        lineHeight: 1,
                                     }}
                                 >
                                     {stock.ticker}
                                 </Typography>
                                 <Typography
                                     sx={{
-                                        fontFamily: "'JetBrains Mono', monospace",
-                                        fontWeight: 700,
-                                        fontSize: "1.5rem",
-                                        color: "#4ade80",
+                                        fontFamily: "'Baloo 2', sans-serif",
+                                        fontWeight: 800,
+                                        fontSize: "2rem",
+                                        color: theme.leaf,
+                                        lineHeight: 1,
+                                        textShadow: `0 2px 10px ${theme.leaf}33`,
                                     }}
                                 >
-                                    ${stock.price.toFixed(2)}
+                                    🍌{stock.price.toFixed(2)}
                                 </Typography>
                             </Box>
-                            <Typography sx={{ color: "#94a3b8", fontSize: "1rem", mb: 1.5 }}>
+                            <Typography sx={{ color: theme.mute, fontFamily: "'Nunito', sans-serif", fontSize: "1.1rem", fontWeight: 600, mb: 2 }}>
                                 {stock.companyName}
                             </Typography>
-                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5 }}>
                                 <Chip label={stock.sector} size="small" sx={chipStyle} />
                                 <Chip label={`${stock.marketCap} Cap`} size="small" sx={chipStyle} />
-                                <Chip label={`${stock.volatility} Volatility`} size="small" sx={chipStyle} />
+                                <Chip label={`Risk: ${stock.volatility}`} size="small" sx={chipStyle} />
                                 <Chip label={`Rating: ${stock.investorRating}`} size="small" sx={chipStyle} />
                             </Box>
                         </Box>
@@ -144,16 +172,18 @@ const StockDashboard: React.FC = () => {
                         {/* Price chart */}
                         <Box
                             sx={{
-                                bgcolor: "rgba(255,255,255,0.02)",
-                                border: "1px solid rgba(255,255,255,0.07)",
-                                borderRadius: "16px",
+                                bgcolor: theme.card,
+                                border: `2px solid ${theme.line}`,
+                                borderRadius: "20px",
                                 p: 3,
                             }}
                         >
-                            <Typography sx={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(148,163,184,0.6)", letterSpacing: "1px", mb: 2 }}>
-                                PRICE HISTORY
-                            </Typography>
-                            <Box sx={{ height: 360 }}>
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                                <Typography sx={{ fontSize: "1.4rem", fontWeight: 800, fontFamily: "'Baloo 2', sans-serif", color: theme.ink }}>
+                                    📈 PRICE HISTORY
+                                </Typography>
+                            </Box>
+                            <Box sx={{ height: 400 }}>
                                 <AdvancedStockChart ticker={stock.ticker} priceRecords={stock.priceRecords} />
                             </Box>
                         </Box>
@@ -162,41 +192,49 @@ const StockDashboard: React.FC = () => {
                         {stock.newsReleases.length > 0 && (
                             <Box
                                 sx={{
-                                    bgcolor: "rgba(255,255,255,0.02)",
-                                    border: "1px solid rgba(255,255,255,0.07)",
-                                    borderRadius: "16px",
+                                    bgcolor: theme.card,
+                                    border: `2px solid ${theme.line}`,
+                                    borderRadius: "20px",
                                     p: 3,
                                 }}
                             >
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                                    <NewspaperIcon sx={{ color: "rgba(148,163,184,0.6)", fontSize: "1rem" }} />
-                                    <Typography sx={{ fontSize: "0.8rem", fontWeight: 700, color: "rgba(148,163,184,0.6)", letterSpacing: "1px" }}>
-                                        NEWS & EVENTS
+                                <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+                                    <Typography sx={{ fontSize: "1.4rem", fontWeight: 800, fontFamily: "'Baloo 2', sans-serif", color: theme.ink }}>
+                                        📰 NEWS & EVENTS
                                     </Typography>
                                 </Box>
-                                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                                     {stock.newsReleases.slice().reverse().map((news, i) => (
-                                        <Box key={i}>
-                                            {i > 0 && <Divider sx={{ borderColor: "rgba(255,255,255,0.05)", mb: 1 }} />}
+                                        <Box key={i} sx={{ 
+                                            padding: "16px", 
+                                            borderLeft: `5px solid ${theme.ban2}`, 
+                                            bgcolor: theme.ph, 
+                                            borderRadius: "8px 16px 16px 8px" 
+                                        }}>
                                             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 2 }}>
                                                 <Box>
                                                     <Chip
                                                         label={news.eventType}
                                                         size="small"
                                                         sx={{
-                                                            ...chipStyle,
-                                                            mb: 0.5,
-                                                            fontSize: "0.65rem",
+                                                            bgcolor: theme.line,
+                                                            color: theme.ink,
+                                                            fontWeight: 800,
+                                                            fontSize: "0.7rem",
+                                                            mb: 1,
+                                                            height: "22px"
                                                         }}
                                                     />
-                                                    <Typography sx={{ fontSize: "0.85rem", color: "#cbd5e1", lineHeight: 1.5 }}>
+                                                    <Typography sx={{ fontFamily: "'Nunito', sans-serif", fontSize: "1rem", color: theme.ink, fontWeight: 600, lineHeight: 1.4 }}>
                                                         {news.template}
                                                     </Typography>
                                                 </Box>
                                                 <Typography
                                                     sx={{
-                                                        fontSize: "0.72rem",
-                                                        color: "rgba(148,163,184,0.5)",
+                                                        fontFamily: "'Nunito', sans-serif",
+                                                        fontSize: "0.8rem",
+                                                        color: theme.mute,
+                                                        fontWeight: 700,
                                                         whiteSpace: "nowrap",
                                                         flexShrink: 0,
                                                     }}

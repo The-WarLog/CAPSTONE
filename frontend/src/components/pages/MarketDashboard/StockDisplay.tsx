@@ -4,10 +4,21 @@ import { CircularProgress, Typography } from "@mui/material";
 import { fetchAllStocks } from "../../../api/StockClient";
 import type { StockBasicDTO } from "../../../types/StockDTOs";
 import { useNavigate } from "react-router-dom";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 
 const RETRY_INTERVAL = 5000;
+
+const theme = {
+    bg: "#0f1f22",
+    card: "#1a3034",
+    ink: "#e8f4f1",
+    mute: "#93b0b3",
+    ban: "#ffcf33",
+    ban2: "#e9b400",
+    leaf: "#4cc989",
+    red: "#ef7070",
+    line: "#2b4549",
+    ph: "#142629"
+};
 
 const StockDisplay: React.FC = () => {
     const [stocks, setStocks] = useState<StockBasicDTO[] | undefined>();
@@ -44,16 +55,16 @@ const StockDisplay: React.FC = () => {
     if (connecting || !stocks) {
         return (
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, p: 3 }}>
-                <CircularProgress size={18} sx={{ color: "#6366f1" }} />
-                <Typography sx={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem" }}>
-                    Loading stocks…
+                <CircularProgress size={18} sx={{ color: theme.ban }} />
+                <Typography sx={{ color: theme.mute, fontSize: "0.85rem", fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>
+                    Loading bananas…
                 </Typography>
             </Box>
         );
     }
 
     return (
-        <Box sx={{ width: "100%", flex: 1, overflowY: "auto", p: 2 }}>
+        <Box sx={{ width: "100%", flex: 1, overflowY: "auto", p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
             {/* Header row */}
             <Box
                 sx={{
@@ -68,11 +79,12 @@ const StockDisplay: React.FC = () => {
                     <Typography
                         key={h}
                         sx={{
-                            fontSize: "0.7rem",
-                            fontWeight: 700,
-                            color: "rgba(148,163,184,0.6)",
+                            fontSize: "0.8rem",
+                            fontWeight: 800,
+                            color: theme.mute,
                             letterSpacing: "1px",
                             textTransform: "uppercase",
+                            fontFamily: "'Baloo 2', sans-serif"
                         }}
                     >
                         {h}
@@ -94,25 +106,27 @@ const StockDisplay: React.FC = () => {
                             alignItems: "center",
                             px: 2,
                             py: 1.5,
-                            mb: 0.5,
-                            borderRadius: "10px",
+                            bgcolor: theme.card,
+                            borderRadius: "14px",
                             cursor: "pointer",
-                            border: "1px solid transparent",
+                            border: `1px solid ${theme.line}`,
+                            borderLeft: `5px solid ${isTrending ? theme.leaf : theme.red}`,
                             transition: "all 0.15s ease",
                             "&:hover": {
-                                bgcolor: "rgba(99,102,241,0.07)",
-                                border: "1px solid rgba(99,102,241,0.2)",
-                                transform: "translateY(-1px)",
+                                bgcolor: theme.ph,
+                                borderColor: theme.ban2,
+                                transform: "translateY(-2px)",
+                                boxShadow: `0 4px 10px rgba(0,0,0,0.2)`
                             },
                         }}
                     >
                         {/* Ticker */}
                         <Typography
                             sx={{
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontWeight: 700,
-                                fontSize: "0.9rem",
-                                color: "#818cf8",
+                                fontFamily: "'Baloo 2', sans-serif",
+                                fontWeight: 800,
+                                fontSize: "1.1rem",
+                                color: theme.ink,
                                 letterSpacing: "0.5px",
                             }}
                         >
@@ -122,8 +136,10 @@ const StockDisplay: React.FC = () => {
                         {/* Company name */}
                         <Typography
                             sx={{
-                                fontSize: "0.85rem",
-                                color: "#cbd5e1",
+                                fontSize: "0.95rem",
+                                color: theme.mute,
+                                fontWeight: 700,
+                                fontFamily: "'Nunito', sans-serif",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
                                 whiteSpace: "nowrap",
@@ -135,20 +151,15 @@ const StockDisplay: React.FC = () => {
 
                         {/* Price */}
                         <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                            {isTrending ? (
-                                <TrendingUpIcon sx={{ fontSize: "0.85rem", color: "#4ade80" }} />
-                            ) : (
-                                <TrendingDownIcon sx={{ fontSize: "0.85rem", color: "#f87171" }} />
-                            )}
                             <Typography
                                 sx={{
-                                    fontFamily: "'JetBrains Mono', monospace",
-                                    fontWeight: 600,
-                                    fontSize: "0.9rem",
-                                    color: isTrending ? "#4ade80" : "#f87171",
+                                    fontFamily: "'Baloo 2', sans-serif",
+                                    fontWeight: 800,
+                                    fontSize: "1.1rem",
+                                    color: isTrending ? theme.leaf : theme.red,
                                 }}
                             >
-                                ${stock.price.toFixed(2)}
+                                🍌{stock.price.toFixed(2)}
                             </Typography>
                         </Box>
                     </Box>
@@ -157,8 +168,8 @@ const StockDisplay: React.FC = () => {
 
             {stocks.length === 0 && (
                 <Box sx={{ p: 4, textAlign: "center" }}>
-                    <Typography sx={{ color: "rgba(148,163,184,0.5)", fontSize: "0.9rem" }}>
-                        No stocks in the market yet.
+                    <Typography sx={{ color: theme.mute, fontSize: "0.9rem", fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>
+                        No bananas in the market yet.
                     </Typography>
                 </Box>
             )}

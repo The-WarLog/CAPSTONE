@@ -113,23 +113,23 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
             const chart = createChart(chartContainerRef.current, {
                 layout: {
                     background: { type: "solid" as any, color: "transparent" },
-                    textColor: "rgba(148,163,184,0.7)",
-                    fontFamily: "'JetBrains Mono', monospace",
+                    textColor: "#93b0b3",
+                    fontFamily: "'Nunito', sans-serif",
                 },
                 grid: {
-                    vertLines: { color: "rgba(255,255,255,0.04)" },
-                    horzLines: { color: "rgba(255,255,255,0.04)" },
+                    vertLines: { color: "#2b4549" },
+                    horzLines: { color: "#2b4549" },
                 },
                 crosshair: {
                     mode: 0 as any,
-                    vertLine: { width: 1, color: "rgba(99,102,241,0.5)", style: 0 },
-                    horzLine: { width: 1, color: "rgba(99,102,241,0.5)", style: 0 },
+                    vertLine: { width: 1, color: "#ffcf33", style: 0 },
+                    horzLine: { width: 1, color: "#ffcf33", style: 0 },
                 },
                 rightPriceScale: {
-                    borderColor: "rgba(255,255,255,0.1)",
+                    borderColor: "#2b4549",
                 },
                 timeScale: {
-                    borderColor: "rgba(255,255,255,0.1)",
+                    borderColor: "#2b4549",
                     timeVisible: true,
                     secondsVisible: false,
                 },
@@ -158,13 +158,14 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
         const chart = createChart(rsiContainerRef.current, {
             layout: {
                 background: { type: "solid" as any, color: "transparent" },
-                textColor: "rgba(148,163,184,0.7)",
+                textColor: "#93b0b3",
+                fontFamily: "'Nunito', sans-serif",
             },
             grid: {
-                vertLines: { color: "rgba(255,255,255,0.04)" },
-                horzLines: { color: "rgba(255,255,255,0.04)" },
+                vertLines: { color: "#2b4549" },
+                horzLines: { color: "#2b4549" },
             },
-            rightPriceScale: { borderColor: "rgba(255,255,255,0.1)" },
+            rightPriceScale: { borderColor: "#2b4549" },
             timeScale: { visible: false },
             autoSize: true,
         });
@@ -179,14 +180,14 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
         
 
         const isUp = filteredRecords[filteredRecords.length-1].close >= filteredRecords[0].close;
-        const color = isUp ? "#4ade80" : "#f87171";
+        const color = isUp ? "#4cc989" : "#ef7070";
 
         let mainSeries: any;
         try {
             if (chartType === "Line") {
                 mainSeries = chartApi.addSeries(AreaSeries, {
                     lineColor: color,
-                    topColor: isUp ? "rgba(74,222,128,0.4)" : "rgba(248,113,113,0.4)",
+                    topColor: isUp ? "#4cc98966" : "#ef707066",
                     bottomColor: "rgba(0,0,0,0)",
                     lineWidth: 2,
                 });
@@ -197,11 +198,11 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                 mainSeries.setData(lineData);
             } else {
                 mainSeries = chartApi.addSeries(CandlestickSeries, {
-                    upColor: '#4ade80',
-                    downColor: '#f87171',
+                    upColor: '#4cc989',
+                    downColor: '#ef7070',
                     borderVisible: false,
-                    wickUpColor: '#4ade80',
-                    wickDownColor: '#f87171',
+                    wickUpColor: '#4cc989',
+                    wickDownColor: '#ef7070',
                 });
                 const candleData = filteredRecords.map(r => ({
                     time: r.marketDate.split('T')[0] as any,
@@ -214,14 +215,14 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
             }
 
             if (showSMA) {
-                const smaSeries = chartApi.addSeries(LineSeries, { color: '#818cf8', lineWidth: 2 });
+                const smaSeries = chartApi.addSeries(LineSeries, { color: '#ffcf33', lineWidth: 2 });
                 smaSeries.setData(calculateSMA(filteredRecords, 10));
             }
 
             if (showBB) {
                 const bb = calculateBollingerBands(filteredRecords, 20, 2);
-                const upperSeries = chartApi.addSeries(LineSeries, { color: 'rgba(99,102,241,0.5)', lineWidth: 1, lineStyle: 2 });
-                const lowerSeries = chartApi.addSeries(LineSeries, { color: 'rgba(99,102,241,0.5)', lineWidth: 1, lineStyle: 2 });
+                const upperSeries = chartApi.addSeries(LineSeries, { color: '#e9b400', lineWidth: 1, lineStyle: 2 });
+                const lowerSeries = chartApi.addSeries(LineSeries, { color: '#e9b400', lineWidth: 1, lineStyle: 2 });
                 upperSeries.setData(bb.upper);
                 lowerSeries.setData(bb.lower);
             }
@@ -282,8 +283,8 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                         size="small"
                         sx={{
                             '& .MuiToggleButton-root': {
-                                color: "rgba(148,163,184,0.7)", borderColor: "rgba(255,255,255,0.1)", fontSize: "0.7rem", py: 0.5, px: 1,
-                                '&.Mui-selected': { color: "#f1f5f9", bgcolor: "rgba(99,102,241,0.2)" }
+                                color: "#93b0b3", borderColor: "#2b4549", fontSize: "0.75rem", py: 0.5, px: 1.5, fontFamily: "'Nunito', sans-serif", fontWeight: 700,
+                                '&.Mui-selected': { color: "#1d3538", bgcolor: "#ffcf33" }
                             }
                         }}
                     >
@@ -291,15 +292,15 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                         <ToggleButton value="Candle">Candle</ToggleButton>
                     </ToggleButtonGroup>
 
-                    <Chip label={`High: $${maxPrice.toFixed(2)}`} size="small" sx={{ bgcolor: "rgba(74,222,128,0.1)", color: "#4ade80", borderRadius: 1 }} />
-                    <Chip label={`Low: $${minPrice.toFixed(2)}`} size="small" sx={{ bgcolor: "rgba(248,113,113,0.1)", color: "#f87171", borderRadius: 1 }} />
+                    <Chip label={`High: 🍌${maxPrice.toFixed(2)}`} size="small" sx={{ bgcolor: "#4cc98922", color: "#4cc989", borderRadius: "10px", fontWeight: 700, fontFamily: "'Nunito', sans-serif" }} />
+                    <Chip label={`Low: 🍌${minPrice.toFixed(2)}`} size="small" sx={{ bgcolor: "#ef707022", color: "#ef7070", borderRadius: "10px", fontWeight: 700, fontFamily: "'Nunito', sans-serif" }} />
                 </Box>
                 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                     <Box sx={{ display: 'flex', gap: 1 }}>
-                        <FormControlLabel control={<Switch checked={showSMA} onChange={(e) => setShowSMA(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#818cf8' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#818cf8' } }} />} label={<Typography sx={{ fontSize: "0.7rem", color: "#94a3b8" }}>SMA (10)</Typography>} />
-                        <FormControlLabel control={<Switch checked={showBB} onChange={(e) => setShowBB(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: 'rgba(99,102,241,1)' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: 'rgba(99,102,241,1)' } }} />} label={<Typography sx={{ fontSize: "0.7rem", color: "#94a3b8" }}>Bollinger Bands</Typography>} />
-                        <FormControlLabel control={<Switch checked={showRSI} onChange={(e) => setShowRSI(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#c084fc' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#c084fc' } }} />} label={<Typography sx={{ fontSize: "0.7rem", color: "#94a3b8" }}>RSI</Typography>} />
+                        <FormControlLabel control={<Switch checked={showSMA} onChange={(e) => setShowSMA(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#ffcf33' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#ffcf33' } }} />} label={<Typography sx={{ fontSize: "0.75rem", color: "#93b0b3", fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>SMA (10)</Typography>} />
+                        <FormControlLabel control={<Switch checked={showBB} onChange={(e) => setShowBB(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#e9b400' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#e9b400' } }} />} label={<Typography sx={{ fontSize: "0.75rem", color: "#93b0b3", fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>Bollinger Bands</Typography>} />
+                        <FormControlLabel control={<Switch checked={showRSI} onChange={(e) => setShowRSI(e.target.checked)} size="small" sx={{ '& .MuiSwitch-switchBase.Mui-checked': { color: '#c084fc' }, '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#c084fc' } }} />} label={<Typography sx={{ fontSize: "0.75rem", color: "#93b0b3", fontFamily: "'Nunito', sans-serif", fontWeight: 700 }}>RSI</Typography>} />
                     </Box>
                     
                     <ToggleButtonGroup
@@ -309,8 +310,8 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                         size="small"
                         sx={{
                             '& .MuiToggleButton-root': {
-                                color: "rgba(148,163,184,0.7)", borderColor: "rgba(255,255,255,0.1)", fontSize: "0.7rem", py: 0.5, px: 1,
-                                '&.Mui-selected': { color: "#f1f5f9", bgcolor: "rgba(99,102,241,0.2)" }
+                                color: "#93b0b3", borderColor: "#2b4549", fontSize: "0.75rem", py: 0.5, px: 1, fontFamily: "'Nunito', sans-serif", fontWeight: 700,
+                                '&.Mui-selected': { color: "#1d3538", bgcolor: "#ffcf33" }
                             }
                         }}
                     >
@@ -325,8 +326,8 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Box ref={chartContainerRef} sx={{ flex: showRSI ? 0.75 : 1, position: 'relative' }} />
                 {showRSI && (
-                    <Box sx={{ flex: 0.25, position: 'relative', borderTop: '1px solid rgba(255,255,255,0.05)', pt: 1 }}>
-                        <Typography sx={{ position: 'absolute', top: 5, left: 10, fontSize: '0.7rem', color: '#c084fc', zIndex: 10 }}>RSI (14)</Typography>
+                    <Box sx={{ flex: 0.25, position: 'relative', borderTop: '2px solid #2b4549', pt: 1 }}>
+                        <Typography sx={{ position: 'absolute', top: 5, left: 10, fontSize: '0.75rem', fontWeight: 700, color: '#c084fc', zIndex: 10, fontFamily: "'Nunito', sans-serif" }}>RSI (14)</Typography>
                         <Box ref={rsiContainerRef} sx={{ width: '100%', height: '100%' }} />
                     </Box>
                 )}

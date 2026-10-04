@@ -4,6 +4,19 @@ import MarketUtilities from "./MarketUtilities";
 import StockDisplay from "./StockDisplay";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
 
+const theme = {
+    bg: "#0f1f22",
+    card: "#1a3034",
+    ink: "#e8f4f1",
+    mute: "#93b0b3",
+    ban: "#ffcf33",
+    ban2: "#e9b400",
+    leaf: "#4cc989",
+    red: "#ef7070",
+    line: "#2b4549",
+    ph: "#142629"
+};
+
 const MarketDashboard: React.FC = () => {
     return (
         <Page>
@@ -13,9 +26,10 @@ const MarketDashboard: React.FC = () => {
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
-                    bgcolor: "#0f172a",
-                    color: "#f1f5f9",
+                    bgcolor: theme.bg,
+                    color: theme.ink,
                     overflow: "hidden",
+                    fontFamily: "'Nunito', sans-serif",
                 }}
             >
                 {/* Page title bar */}
@@ -29,17 +43,17 @@ const MarketDashboard: React.FC = () => {
                         pb: 0,
                     }}
                 >
-                    <ShowChartIcon sx={{ color: "#6366f1", fontSize: "1.3rem" }} />
+                    <Typography sx={{ fontSize: "1.8rem", lineHeight: 1 }}>🐵</Typography>
                     <Typography
                         sx={{
-                            fontWeight: 700,
-                            color: "rgba(148,163,184,0.6)",
-                            letterSpacing: "2px",
-                            textTransform: "uppercase",
-                            fontSize: "0.75rem",
+                            fontFamily: "'Baloo 2', sans-serif",
+                            fontWeight: 800,
+                            color: theme.ban,
+                            letterSpacing: "1px",
+                            fontSize: "1.6rem",
                         }}
                     >
-                        Market Overview
+                        Banana Market
                     </Typography>
                 </Box>
 

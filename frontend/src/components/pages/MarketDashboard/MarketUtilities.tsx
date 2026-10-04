@@ -24,6 +24,19 @@ const timeFormatter = new Intl.DateTimeFormat("en-US", {
 
 const DEFAULT_INTERVAL = 10_000;
 
+const theme = {
+    bg: "#0f1f22",
+    card: "#1a3034",
+    ink: "#e8f4f1",
+    mute: "#93b0b3",
+    ban: "#ffcf33",
+    ban2: "#e9b400",
+    leaf: "#4cc989",
+    red: "#ef7070",
+    line: "#2b4549",
+    ph: "#142629"
+};
+
 const MarketUtilities: React.FC = () => {
     const [marketState, setMarketState] = useState<MarketState | undefined>();
     const [connecting, setConnecting] = useState(true);
@@ -81,10 +94,10 @@ const MarketUtilities: React.FC = () => {
         return (
             <Box sx={{
                 display: "flex", alignItems: "center", gap: 2,
-                p: 3, borderBottom: "1px solid rgba(255,255,255,0.08)",
+                p: 3, borderBottom: `1px solid ${theme.line}`,
             }}>
-                <CircularProgress size={18} sx={{ color: '#6366f1' }} />
-                <Typography sx={{ color: "rgba(148,163,184,0.6)", fontSize: "0.85rem" }}>
+                <CircularProgress size={18} sx={{ color: theme.ban }} />
+                <Typography sx={{ color: theme.mute, fontSize: "0.85rem", fontFamily: "'Nunito', sans-serif" }}>
                     Connecting to market service…
                 </Typography>
             </Box>
@@ -96,68 +109,80 @@ const MarketUtilities: React.FC = () => {
             width: "100%",
             display: "flex",
             flexDirection: "column",
-            gap: 0.5,
+            gap: 1,
             p: 3,
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            borderBottom: `2px solid ${theme.line}`,
         }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                <Typography sx={{ fontSize: "1.6rem", fontWeight: 700, color: "#f1f5f9", letterSpacing: "-0.5px" }}>
+            <Box sx={{ display: "flex", alignItems: "baseline", gap: 2 }}>
+                <Typography sx={{ fontSize: "1.6rem", fontWeight: 800, color: theme.ink, letterSpacing: "-0.5px", fontFamily: "'Baloo 2', sans-serif" }}>
                     {dateFormatter.format(marketState.date)}
                 </Typography>
                 <Chip
                     label={marketState.isRunning ? "LIVE" : "PAUSED"}
                     size="small"
                     sx={{
-                        bgcolor: marketState.isRunning ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)",
-                        color: marketState.isRunning ? "#4ade80" : "#f87171",
-                        border: `1px solid ${marketState.isRunning ? "rgba(34,197,94,0.3)" : "rgba(239,68,68,0.3)"}`,
-                        fontWeight: 700,
-                        fontSize: "0.65rem",
-                        letterSpacing: "1px",
+                        bgcolor: marketState.isRunning ? `${theme.leaf}22` : `${theme.red}22`,
+                        color: marketState.isRunning ? theme.leaf : theme.red,
+                        border: `2px solid ${marketState.isRunning ? theme.leaf : theme.red}`,
+                        fontWeight: 800,
+                        fontSize: "0.7rem",
+                        fontFamily: "'Nunito', sans-serif",
+                        height: "24px"
                     }}
                 />
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography sx={{ color: "rgba(148,163,184,0.8)", fontSize: "0.85rem" }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1 }}>
+                <Typography sx={{ color: theme.mute, fontSize: "0.95rem", fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}>
                     {timeFormatter.format(marketState.date)}
                 </Typography>
-                <Typography sx={{ color: "rgba(148,163,184,0.5)", fontSize: "0.85rem" }}>·</Typography>
-                <Typography sx={{ color: "rgba(148,163,184,0.8)", fontSize: "0.85rem" }}>
+                <Typography sx={{ color: theme.line, fontSize: "0.95rem" }}>·</Typography>
+                <Typography sx={{ color: theme.mute, fontSize: "0.95rem", fontFamily: "'Nunito', sans-serif", fontWeight: 600 }}>
                     Interval: {marketState.currentIntervalMs / 1000}s
                 </Typography>
-                <Typography sx={{ color: "rgba(148,163,184,0.5)", fontSize: "0.85rem" }}>·</Typography>
-                <Typography sx={{ color: "rgba(148,163,184,0.8)", fontSize: "0.85rem", textTransform: "capitalize" }}>
+                <Typography sx={{ color: theme.line, fontSize: "0.95rem" }}>·</Typography>
+                <Typography sx={{ color: theme.mute, fontSize: "0.95rem", fontFamily: "'Nunito', sans-serif", textTransform: "capitalize", fontWeight: 600 }}>
                     {marketState.trajectory?.toLowerCase()}
                 </Typography>
             </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mt: 0.5 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                 <IconButton
                     onClick={() => updateMarketInterval(false)}
                     size="small"
-                    sx={{ color: "rgba(148,163,184,0.7)", "&:hover": { color: "#f1f5f9", bgcolor: "rgba(255,255,255,0.05)" } }}
+                    sx={{ 
+                        color: theme.ink,
+                        bgcolor: theme.card,
+                        border: `2px solid ${theme.line}`,
+                        "&:hover": { bgcolor: theme.ph, borderColor: theme.ban } 
+                    }}
                 >
-                    <FastForwardIcon sx={{ transform: 'scaleX(-1)', fontSize: "1.1rem" }} />
+                    <FastForwardIcon sx={{ transform: 'scaleX(-1)', fontSize: "1.2rem" }} />
                 </IconButton>
                 <IconButton
                     onClick={updateMarketStatus}
                     size="small"
                     sx={{
-                        color: marketState.isRunning ? "#4ade80" : "#f87171",
-                        bgcolor: marketState.isRunning ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
-                        border: `1px solid ${marketState.isRunning ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}`,
-                        borderRadius: "8px",
+                        color: theme.ink,
+                        bgcolor: marketState.isRunning ? theme.ban : theme.card,
+                        border: `2px solid ${marketState.isRunning ? theme.ban2 : theme.line}`,
+                        borderRadius: "12px",
                         mx: 0.5,
-                        "&:hover": { bgcolor: marketState.isRunning ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)" }
+                        px: 2,
+                        "&:hover": { bgcolor: marketState.isRunning ? theme.ban2 : theme.ph }
                     }}
                 >
-                    {marketState.isRunning ? <PauseIcon sx={{ fontSize: "1.1rem" }} /> : <PlayArrowIcon sx={{ fontSize: "1.1rem" }} />}
+                    {marketState.isRunning ? <PauseIcon sx={{ fontSize: "1.4rem", color: "#2b2200" }} /> : <PlayArrowIcon sx={{ fontSize: "1.4rem" }} />}
                 </IconButton>
                 <IconButton
                     onClick={() => updateMarketInterval(true)}
                     size="small"
-                    sx={{ color: "rgba(148,163,184,0.7)", "&:hover": { color: "#f1f5f9", bgcolor: "rgba(255,255,255,0.05)" } }}
+                    sx={{ 
+                        color: theme.ink,
+                        bgcolor: theme.card,
+                        border: `2px solid ${theme.line}`,
+                        "&:hover": { bgcolor: theme.ph, borderColor: theme.ban } 
+                    }}
                 >
-                    <FastForwardIcon sx={{ fontSize: "1.1rem" }} />
+                    <FastForwardIcon sx={{ fontSize: "1.2rem" }} />
                 </IconButton>
             </Box>
         </Box>
