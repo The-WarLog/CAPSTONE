@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import ContentContainer from "./ContentContainer";
 import SideBar from "./SideBar";
+import PlayerHeader from "./PlayerHeader";
 
 const PageStyling = {
 	display: "flex",
@@ -9,7 +10,7 @@ const PageStyling = {
 	width: "100%",
 	height: "100%",
 	overflow: "hidden",
-	backgroundColor: "#0f172a",
+	backgroundColor: "#0f1f22",
 }
 
 const Page: React.FC<{
@@ -20,7 +21,10 @@ const Page: React.FC<{
 	return (
 		<Box sx={PageStyling}>
 			<SideBar/>
-			<ContentContainer>{children}</ContentContainer>
+			<ContentContainer>
+                <PlayerHeader />
+                {children}
+            </ContentContainer>
 		</Box>
 	)
 }

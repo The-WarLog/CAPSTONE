@@ -8,6 +8,8 @@ import AdvancedStockChart from "../../shared/AdvancedStockChart";
 import NewspaperIcon from "@mui/icons-material/Newspaper";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import { usePlayer } from "../../../context/PlayerContext";
+import { Button, TextField } from "@mui/material";
 
 // Banana Life Theme Colors
 const theme = {
@@ -63,7 +65,25 @@ const StockDashboard: React.FC = () => {
     const { ticker } = useParams<{ ticker: string }>();
     const [stock, setStock] = useState<StockFullDTO | undefined>();
     const [error, setError] = useState<string | null>(null);
+    const [tradeAmount, setTradeAmount] = useState("10");
     const navigate = useNavigate();
+    const { state, buyStock, sellStock } = usePlayer();
+
+    const handleBuy = () => {
+        if (!stock) return;
+        const shares = parseFloat(tradeAmount);
+        if (isNaN(shares) || shares <= 0) return alert("Invalid amount");
+        const success = buyStock(stock.ticker, shares, stock.price);
+        if (!success) alert("Not enough bananas!");
+    };
+
+    const handleSell = () => {
+        if (!stock) return;
+        const shares = parseFloat(tradeAmount);
+        if (isNaN(shares) || shares <= 0) return alert("Invalid amount");
+        const success = sellStock(stock.ticker, shares, stock.price);
+        if (!success) alert("You don't own enough shares!");
+    };
 
     useEffect(() => {
         if (!ticker) return;
@@ -167,6 +187,30 @@ const StockDashboard: React.FC = () => {
                             <StatCard label="Investor Rating" value={stock.investorRating} />
                             <StatCard label="Price Records" value={`${stock.priceRecords.length}`} />
                             <StatCard label="News Events" value={`${stock.newsReleases.length}`} />
+                        </Box>
+
+                        {/* Trade Box */}
+                        <Box sx={{ bgcolor: theme.card, border: `2px solid ${theme.line}`, borderRadius: "20px", p: 3, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: "wrap", gap: 2 }}>
+                            <Box>
+                                <Typography sx={{ fontSize: "1.4rem", fontWeight: 800, fontFamily: "'Baloo 2', sans-serif", color: theme.ink }}>
+                                    💱 TRADE {stock.ticker}
+                                </Typography>
+                                <Typography sx={{ color: theme.mute, fontFamily: "'Nunito', sans-serif" }}>
+                                    You own: {state.portfolio[stock.ticker]?.shares.toFixed(2) || 0} shares (🍌{((state.portfolio[stock.ticker]?.shares || 0) * stock.price).toFixed(2)})
+                                </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                                <TextField 
+                                    label="Shares" 
+                                    type="number" 
+                                    value={tradeAmount} 
+                                    onChange={(e) => setTradeAmount(e.target.value)}
+                                    size="small" 
+                                    sx={{ width: 100, '& .MuiOutlinedInput-root': { color: theme.ink, '& fieldset': { borderColor: theme.line }, '&:hover fieldset': { borderColor: theme.mute }, '&.Mui-focused fieldset': { borderColor: theme.ban } }, '& .MuiInputLabel-root': { color: theme.mute } }} 
+                                />
+                                <Button onClick={handleBuy} sx={{ bgcolor: theme.leaf, color: "#fff", fontWeight: 800, px: 3, borderRadius: "8px", "&:hover": { bgcolor: "#38a169" } }}>Buy</Button>
+                                <Button onClick={handleSell} sx={{ bgcolor: theme.red, color: "#fff", fontWeight: 800, px: 3, borderRadius: "8px", "&:hover": { bgcolor: "#c53030" } }}>Sell</Button>
+                            </Box>
                         </Box>
 
                         {/* Price chart */}

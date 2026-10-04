@@ -119,9 +119,30 @@ const SideBar: React.FC = () => {
             <NavItem
                 id="nav-market-dashboard"
                 icon={<DashboardIcon sx={{ fontSize: "inherit" }} />}
-                label="Market Dashboard"
-                active={isMarket}
+                label="Market"
+                active={location.pathname === "/"}
                 onClick={() => navigate("/")}
+            />
+            <NavItem
+                id="nav-portfolio"
+                icon={<Box sx={{ fontSize: "1.2rem" }}>💼</Box>}
+                label="Portfolio"
+                active={location.pathname.startsWith("/portfolio")}
+                onClick={() => navigate("/portfolio")}
+            />
+            <NavItem
+                id="nav-jobs"
+                icon={<Box sx={{ fontSize: "1.2rem" }}>🛠️</Box>}
+                label="Odd Jobs"
+                active={location.pathname.startsWith("/jobs")}
+                onClick={() => navigate("/jobs")}
+            />
+            <NavItem
+                id="nav-loans"
+                icon={<Box sx={{ fontSize: "1.2rem" }}>🤝</Box>}
+                label="Contacts"
+                active={location.pathname.startsWith("/loans")}
+                onClick={() => navigate("/loans")}
             />
 
             {/* Footer */}
