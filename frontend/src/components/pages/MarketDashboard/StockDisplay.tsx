@@ -23,6 +23,7 @@ const theme = {
 const StockDisplay: React.FC = () => {
     const [stocks, setStocks] = useState<StockBasicDTO[] | undefined>();
     const [connecting, setConnecting] = useState(true);
+    const [gossip, setGossip] = useState("📣 JUNGLE RUMORS: CocoCoin CEO seen burying bananas; stock plummets! • Shortage of peels causes Peel Bonds to surge! •");
     const navigate = useNavigate();
     // Track whether we are still mounted so we don't setState after unmount
     const mountedRef = useRef(true);
@@ -52,6 +53,28 @@ const StockDisplay: React.FC = () => {
         };
     }, []); // run only once on mount — no dependency loop
 
+    useEffect(() => {
+        if (!stocks || stocks.length === 0) return;
+        
+        // Fetch a live random snippet about one of the dummy companies using Wikipedia API
+        const randomStock = stocks[Math.floor(Math.random() * stocks.length)];
+        
+        fetch(`https://en.wikipedia.org/w/api.php?action=query&origin=*&format=json&prop=extracts&exintro&explaintext&titles=${encodeURIComponent(randomStock.companyName)}`)
+            .then(res => res.json())
+            .then(data => {
+                if (!mountedRef.current) return;
+                const pages = data.query?.pages;
+                if (pages) {
+                    const pageId = Object.keys(pages)[0];
+                    let snippet = pages[pageId]?.extract?.substring(0, 150);
+                    if (snippet) {
+                        setGossip(`📣 JUNGLE RUMORS (LIVE): Did you know about ${randomStock.companyName}? "${snippet.replace(/\n/g, " ")}..." • Stay tuned for more monkey business! •`);
+                    }
+                }
+            })
+            .catch(console.error);
+    }, [stocks]);
+
     if (connecting || !stocks) {
         return (
             <Box sx={{ display: "flex", alignItems: "center", gap: 2, p: 3 }}>
@@ -66,12 +89,12 @@ const StockDisplay: React.FC = () => {
     return (
         <Box sx={{ width: "100%", flex: 1, overflowY: "auto", p: 2, display: "flex", flexDirection: "column", gap: 1 }}>
             {/* News Ticker */}
-        <Box sx={{ overflow: "hidden", whiteSpace: "nowrap", bgcolor: theme.line, color: theme.ink, py: 1, px: 2, borderRadius: "10px", mb: 1 }}>
-            <Typography sx={{ display: "inline-block", fontFamily: "'Nunito', sans-serif", fontSize: "0.85rem", animation: "scroll 15s linear infinite" }}>
-                📣 JUNGLE RUMORS: CocoCoin CEO seen burying bananas; stock plummets! • Shortage of peels causes Peel Bonds to surge! • Gorilla Gus says he will break knees if not paid •
+        <Box sx={{ flexShrink: 0, overflow: "hidden", whiteSpace: "nowrap", bgcolor: theme.line, color: theme.ink, py: 1, px: 2, borderRadius: "10px", mb: 1 }}>
+            <Typography sx={{ display: "inline-block", fontFamily: "'Nunito', sans-serif", fontSize: "0.85rem", animation: "scroll 20s linear infinite" }}>
+                {gossip}
             </Typography>
             <style>
-                {`@keyframes scroll { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }`}
+                {`@keyframes scroll { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }`}
             </style>
         </Box>
 

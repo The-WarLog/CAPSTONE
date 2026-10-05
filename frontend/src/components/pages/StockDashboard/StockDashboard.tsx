@@ -87,9 +87,25 @@ const StockDashboard: React.FC = () => {
 
     useEffect(() => {
         if (!ticker) return;
-        fetchFullStockByTicker(ticker)
-            .then(setStock)
-            .catch(() => setError("Could not load stock data."));
+        let mounted = true;
+        
+        const fetchStock = () => {
+            fetchFullStockByTicker(ticker)
+                .then(data => {
+                    if (mounted) setStock(data);
+                })
+                .catch(() => {
+                    if (mounted) setError("Could not load stock data.");
+                });
+        };
+
+        fetchStock();
+        const intervalId = setInterval(fetchStock, 5000);
+
+        return () => {
+            mounted = false;
+            clearInterval(intervalId);
+        };
     }, [ticker]);
 
     return (

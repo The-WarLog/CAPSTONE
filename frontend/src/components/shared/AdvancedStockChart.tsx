@@ -176,8 +176,8 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
     useEffect(() => {
         if (!chartApi || filteredRecords.length === 0) return;
 
-        // Clear existing series
-        
+        const seriesToRemove: any[] = [];
+        const rsiSeriesToRemove: any[] = [];
 
         const isUp = filteredRecords[filteredRecords.length-1].close >= filteredRecords[0].close;
         const color = isUp ? "#4cc989" : "#ef7070";
@@ -213,10 +213,12 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                 }));
                 mainSeries.setData(candleData);
             }
+            seriesToRemove.push(mainSeries);
 
             if (showSMA) {
                 const smaSeries = chartApi.addSeries(LineSeries, { color: '#ffcf33', lineWidth: 2 });
                 smaSeries.setData(calculateSMA(filteredRecords, 10));
+                seriesToRemove.push(smaSeries);
             }
 
             if (showBB) {
@@ -225,6 +227,7 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
                 const lowerSeries = chartApi.addSeries(LineSeries, { color: '#e9b400', lineWidth: 1, lineStyle: 2 });
                 upperSeries.setData(bb.upper);
                 lowerSeries.setData(bb.lower);
+                seriesToRemove.push(upperSeries, lowerSeries);
             }
         } catch (e: any) {
             setChartError(e.message || String(e));
@@ -249,16 +252,15 @@ const AdvancedStockChart: React.FC<AdvancedStockChartProps> = ({ ticker, priceRe
         chartApi.timeScale().fitContent();
 
         return () => {
-            if (mainSeries) {
-                try {
-                    chartApi.removeSeries(mainSeries);
-                } catch(e) {}
-            }
-            // removing all series is handled by recreating chart or manually cleaning up if needed
-            // Lightweight charts doesn't have a clearAll method easily, so we usually just let it re-init
-            // but for performance, we should remove them. In this simple wrapper, React strict mode might double mount.
-            // We just clear container if we wanted, but let's rely on chartApi state.
-        }
+            seriesToRemove.forEach(s => {
+                try { chartApi.removeSeries(s); } catch(e) {}
+            });
+            rsiSeriesToRemove.forEach(s => {
+                if (rsiChartApi) {
+                    try { rsiChartApi.removeSeries(s); } catch(e) {}
+                }
+            });
+        };
     }, [chartApi, rsiChartApi, filteredRecords, chartType, showSMA, showBB, showRSI]);
 
 
